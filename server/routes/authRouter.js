@@ -2,39 +2,28 @@ const express = require('express');
 const app = require('../server');
 require('dotenv').config();
 
-const authController = require('../controllers/authController');
+const authController = require('../controllers/authController.js');
 const router = express.Router();
 
-router.use(
-  '/github',
-  authController.authenticate,
+router.get('/login', authController.authenticate);
+
+router.get('/', (req, res) => {
+  const client_id = process.env.CLIENT_ID;
+  const redirect_uri = 'http://localhost:8080/github/callback';
+  const scope = 'user';
+  const url = `https://github.com/login/oauth/authorize?client_id=${client_id}&redirect_uri=${redirect_uri}&allow_signup=true&scope=${scope}`;
+  res.redirect(url);
+});
+
+router.get(
+  '/callback',
   authController.postAuth,
   authController.afterToken,
+  authController.jsonToken,
   (req, res) => {
-    console.log('User authenticated by github');
-    // res.cookie()
+    console.log('second middleware chain is finished');
     return res.redirect('/');
   }
 );
-
-router.post('/github', (req, res) => {
-  const client_id = process.env.CLIENT_ID;
-  const redirect_uri = 'http://localhost:8080/';
-  const scope = 'user';
-  const url = `https://github.com/login/oauth/authorize?client_id=${client_id}
-    &redirect_uri=${redirect_uri}&allow_signup=true&scope=${scope}`;
-    res.json({ url });
-    return res.redirect(url);
-});
-
-// router.get('/github', (req, res) => {
-//     const client_id = process.env.CLIENT_ID;
-//     const redirect_uri = 'http://localhost:8080/';
-//     const scope = 'user';
-//     const url = `https://github.com/login/oauth/authorize?client_id=${client_id}
-//       &redirect_uri=${redirect_uri}&allow_signup=true&scope=${scope}`;
-
-//     res.json({ url });
-//   });
 
 module.exports = router;

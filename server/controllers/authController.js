@@ -1,21 +1,19 @@
 const request = require('request');
 require('dotenv').config();
 const authController = {};
+const jwt = require('jsonwebtoken');
 
 authController.authenticate = (req, res, next) => {
-  console.log('authing');
+  console.log('authenticate start');
   res.redirect(
-    `https://github.com/login/oauth/authorize?client_id=c39c3106c66253bf31bc&redirect_uri=http://localhost:8080/&allow_signup=true&scope=user`
+    `https://github.com/login/oauth/authorize?client_id=${process.env.CLIENT_ID}&redirect_uri=http://localhost:8080/&scope=user&allow_signup=true`
   );
-  return next();
 };
 
 authController.postAuth = (req, res, next) => {
-  console.log(
-    'authing part 2, token received',
-    process.env.CLIENT_ID,
-    process.env.CLIENT_SECRET
-  );
+  console.log('post auth start');
+  const url = `https://github.com/login/oauth/authorize?client_id=c39c3106c66253bf31bc&redirect_uri=http://localhost:8080/&allow_signup=true&scope=user`;
+  console.log('authing part 2, token received');
   const code = req.query.code;
   const client_id = process.env.CLIENT_ID;
   const client_secret = process.env.CLIENT_SECRET;
@@ -39,17 +37,19 @@ authController.postAuth = (req, res, next) => {
   };
   request(options, (err, response, body) => {
     res.locals.accessToken = JSON.parse(body).access_token;
-    next();
+    console.log('post auth end');
+    return next();
   });
 };
 
 authController.afterToken = (req, res, next) => {
-  console.log('in afterToken');
+  console.log('afterTOken start');
   const options = {
     url: 'https://api.github.com/user',
+    method: 'GET',
     headers: {
       'User-Agent': 'request',
-      Authorization: `token ${res.locals.accessToken}`,
+      Authorization: `Bearer ${res.locals.accessToken}`,
     },
   };
   request(options, (error, response, body) => {
@@ -58,8 +58,23 @@ authController.afterToken = (req, res, next) => {
     res.locals.username = user.login;
     res.locals.authenticated = true;
 
-    next();
+    console.log('afterTOken end');
+    return next();
   });
+};
+
+authController.jsonToken = (req, res, next) => {
+  console.log('jwt start');
+  const token = jwt.sign(
+    { user: res.locals.username },
+    process.env.CLIENT_SECRET,
+    { expiresIn: '1 day' }
+  );
+  res.locals.jwt = token;
+  console.log('token created');
+  res.cookie('JWT', token, { httpOnly: true, secure: true });
+  console.log('jwt end');
+  return next();
 };
 
 module.exports = authController;
