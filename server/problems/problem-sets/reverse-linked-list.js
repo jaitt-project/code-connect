@@ -17,19 +17,27 @@ class ReverseLinkedList {
       this.next = null;
     }
 
-    // const strFunc = func.toString();
-    // const spliceIndex = strFunc.indexOf('{');
-    // const newStrFunc = strFunc.slice(0, spliceIndex + 1) + '\n  function Node(value){this.value=value;this.next=null;}' + strFunc.slice(spliceIndex + 1);
-    // console.log(newStrFunc)
-    // eval(newStrFunc);
-    // console.log(anonymous({value: 7, next: null}));
+    // add the node class to the function's environment
+    const stringifiedNodeClass = 'function Node(value){this.value=value;this.next=null;}'
+
+    const stringifiedFunc = func.toString();
+    const spliceIndex = stringifiedFunc.indexOf('{');
+    const splicedFunc = stringifiedNodeClass + stringifiedFunc.slice(spliceIndex + 1, -1);
+
+    const funcParamsStart = stringifiedFunc.indexOf('(') + 1; // exclude parens
+    const funcParamsEnd = stringifiedFunc.indexOf(')');
+    const funcParams = stringifiedFunc.slice(funcParamsStart, funcParamsEnd).replace(' ', '').split(',');
+
+    func = new Function(...funcParams, splicedFunc); // updated func with environment to test
+
     // initialize test resulsts
     const tests = {};
 
     // Should return null if the head is null
     let head = null
+    let reversed;
     try {
-      let reversed = func(head);
+      reversed = func(head);
       tests['Should return null if the head is null'] = reversed === null;
     } catch (error) {
       tests['Should return null if the head is null'] = false;
@@ -64,7 +72,7 @@ class ReverseLinkedList {
     }
 
     try {
-      reversed = func(head);
+      let reversed = func(head);
       tests['Should reverse a small linked list successfully'] = true;
 
       for(let i = 10; i >= 0; i--) {
