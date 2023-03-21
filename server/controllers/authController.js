@@ -1,6 +1,7 @@
 const authController = {};
 
 authController.authenticate = () => {
+  console.log('authing')
   fetch('https://github.com/login/oauth/authorize', {
     method: 'GET',
     client_id: 'c39c3106c66253bf31bc',

@@ -2,13 +2,12 @@ const path = require('path');
 const express = require('express');
 const app = express();
 // const db = require('')
-const authController = require('./controllers');
 
 const PORT = 3000;
 
 app.use(express.json());
 
-app.get('/', authController.authenticate, (req, res) => {
+app.get('/', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../client/index.html'));
 });
 
