@@ -4,21 +4,6 @@ const authController = {};
 const jwt = require('jsonwebtoken');
 
 authController.authenticate = (req, res, next) => {
-  // console.log('authenticate start');
-  // const options = {
-  //   url: 'https://github.com/login/oauth/authorize',
-  //   method: 'GET',
-  //   form: {
-  //     client_id: process.env.CLIENT_ID,
-  //     redirect_uri: 'http://localhost:8080/github/callback',
-  //     scope: 'user',
-  //     allowSignup: true,
-  //   },
-  // };
-  //  request(options, (err, response, body) => {
-  //   console.log('authenticate end');
-  //   return next();
-  // });
   console.log('authenticate start');
   res.redirect(
     `https://github.com/login/oauth/authorize?client_id=${process.env.CLIENT_ID}&redirect_uri=http://localhost:8080/&scope=user&allow_signup=true`
