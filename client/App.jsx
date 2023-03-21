@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Routes, useHistory } from 'react-router-dom';
-import Main from './Main/Main';
-import Auth from './components/Auth.jsx';
-import './styles/application.scss';
+import { Route, Routes, useNavigate } from 'react-router-dom';
+import Main from './Main/Main.jsx';
+import Auth from './components/auth.jsx';
+import './stylesheets/styles.scss';
 
 const App = (props) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState({});
-  const history = useHistory();
+  const navigate = useNavigate();
 
   // Log user in and fetch data if JWT is present
   useEffect(() => {
@@ -41,9 +41,9 @@ const App = (props) => {
   useEffect(() => {
     // If user is logged in, redirect to the main page
     if (loggedIn) {
-      history.push('/main');
+      navigate('/main');
     }
-  }, [loggedIn, history]);
+  }, [loggedIn, navigate]);
 
   return (
     <div className='router'>
