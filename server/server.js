@@ -5,11 +5,16 @@ const app = express();
 
 const PORT = 3000;
 
+// routers
+const problemsRouter = require('./routes/problems-route.js');
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
   res.status(200).sendFile(path.join(__dirname, '../client/index.html'));
 });
+
+app.use('/problems', problemsRouter);
 
 // No build command
 // app.use(express.static(path.join(__dirname, '../build')));
