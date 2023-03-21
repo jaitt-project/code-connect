@@ -59,7 +59,7 @@ problemsController.convertToFunction = (req, res, next) => {
   const functionParamsStart = solution.indexOf('(') + 1; // exclude parens
   const functionParamsEnd = solution.indexOf(')');
   const functionParams = solution.slice(functionParamsStart, functionParamsEnd).replace(' ', '').split(','); // split params into an array
-
+  
   // create function
   try {
     res.locals.solutionFunc = new Function(...functionParams, functionBody);

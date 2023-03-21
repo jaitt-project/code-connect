@@ -16,23 +16,23 @@ class TwoSum {
 
     // Should return true if two numbers sum to n
     try {
-      tests['Should return true if two numbers sum to n'] = func([1, 4, 6, 12, 9]) === true && func([1, 4, 6, 12, 9]) === true && func([1, 4, 7, 2, 9, 0]) === true;
+      tests['Should return true if two numbers sum to n'] = func([1, 4, 6, 12, 9], 10) === true && func([1, 4, 6, 12, 9], 16) === true && func([1, 4, 7, 2, 9, 0], 7) === true;
     } catch (error) {
       tests['Should return true if two numbers sum to n'] = false;
     }
     
     // Should work with negative numbers
     try {
-      tests['Should work with negative numbers'] = func([-1, 4, 6, 12, 9]) === true && func([-1, -1, -2, -4, -5]) === true;
+      tests['Should work with negative numbers'] = func([-1, 4, 6, 12, 9], 8) === true && func([-1, -1, -2, -4, -5], -2) === true;
     } catch (error) {
       tests['Should work with negative numbers'] = false;
     }
     
     // should return false if two numbers DO NOT sum to n 
     try {
-      tests['Should return false if two numbers DO NOT sum to n'] = func([1, 4, 6, 12, 9]) === false && func([1, 4, 6, 12, 9]) === false && func([1, 4, 7, 2, 9, 0]) === false;
+      tests['Should return false if two numbers do not sum to n'] = func([1, 4, 6, 12, 9], 2) === false && func([1, 4, 6, 12, 9], 45) === false && func([1, 4, 7, 2, 9, 0], 17) === false;
     } catch (error) {
-      tests['Should return false if two numbers DO NOT sum to n'] = false;
+      tests['Should return false if two numbers do not sum to n'] = false;
     }
 
     // check whether all tests passed

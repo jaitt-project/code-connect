@@ -28,6 +28,7 @@ class BstHeight {
       binarySearchTree = new BinarySearchTree(5);
       binarySearchTree.left = new BinarySearchTree(3);
       binarySearchTree.left.left = new BinarySearchTree(1);
+      console.log(func(binarySearchTree))
       if (func(binarySearchTree) !== 2) tests['Finds the height of a binary search tree'] = false;
 
       binarySearchTree.left.left.right = new BinarySearchTree(2);
