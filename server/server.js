@@ -1,15 +1,25 @@
 const path = require('path');
+const authController = require('./controllers/authController');
 const express = require('express');
 const app = express();
+const authRouter = require('./routes/authRouter');
 // const db = require('')
 
 const PORT = 3000;
 
 app.use(express.json());
+app.use(express.urlencoded());
+
+app.use('/client', express.static(path.resolve(__dirname, '../client')));
 
 app.get('/', (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../client/index.html'));
+  return res.status(200).sendFile(path.join(__dirname, '../client/index.html'));
 });
+
+app.get('/github', authController.authenticate ,authController.postAuth, authController.afterToken, authRouter, (req, res) => {
+  return res.sendStatus(200);
+})
+
 
 // No build command
 // app.use(express.static(path.join(__dirname, '../build')));
@@ -31,7 +41,7 @@ app.use((err, req, res, next) => {
   const errObj = Object.assign({}, defaultError, err);
   console.log(errObj.log);
 
-  res.status(errObj.status).send(errObj.message);
+  return res.status(errObj.status).send(errObj.message);
 });
 
 app.listen(PORT, () => {
