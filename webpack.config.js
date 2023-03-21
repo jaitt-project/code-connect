@@ -46,13 +46,10 @@ module.exports = {
         use: ['style-loader', 'css-loader'],
       },
       {
-        test: /\.(png|jpg|gif|woff|woff2|eot|ttf|svg|ico)$/,
+        test: /\.(png|jpe?g|gif|woff|woff2|eot|ttf|svg|ico)$/,
         use: [
           {
-            loader: 'url-loader',
-            options: {
-              limit: 8192,
-            },
+            loader: 'file-loader',
           },
         ],
       },
