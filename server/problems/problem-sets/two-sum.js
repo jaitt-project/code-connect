@@ -1,6 +1,6 @@
 const {performance} = require('perf_hooks');
 
-class NumIslands {
+class TwoSum {
   constructor(id) {
     this.id = id;
     this.title = 'Two Sum';
@@ -54,4 +54,4 @@ class NumIslands {
   }
 }
 
-module.exports = NumIslands;
+module.exports = TwoSum;

@@ -1,6 +1,6 @@
 const {performance} = require('perf_hooks');
 
-class NumIslands {
+class BinToDec {
   constructor(id) {
     this.id = id;
     this.title = 'Bin to Dec';
@@ -47,4 +47,4 @@ class NumIslands {
   }
 }
 
-module.exports = NumIslands;
+module.exports = BinToDec;
