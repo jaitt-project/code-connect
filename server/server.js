@@ -7,6 +7,9 @@ const authRouter = require('./routes/authRouter');
 
 const PORT = 3000;
 
+// routers
+const problemsRouter = require('./routes/problems-route.js');
+
 app.use(express.json());
 app.use(express.urlencoded());
 
@@ -16,9 +19,13 @@ app.get('/', (req, res) => {
   return res.status(200).sendFile(path.join(__dirname, '../client/index.html'));
 });
 
+
 app.use('/github', authRouter, (req, res, next) => {
   return res.redirect(`https://github.com/login/oauth/authorize?client_id=c39c3106c66253bf31bc&redirect_uri=http://localhost:8080/&allow_signup=true&scope=user`)
 })
+
+
+app.use('/problems', problemsRouter);
 
 
 // No build command
