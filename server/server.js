@@ -1,14 +1,15 @@
 const path = require('path');
-const authController = require('./controllers/authController');
 const express = require('express');
 const app = express();
-const authRouter = require('./routes/authRouter');
+const cookieParser = require('cookie-parser');
 // const db = require('')
 
 const PORT = 3000;
+app.use(cookieParser());
 
 // routers
 const problemsRouter = require('./routes/problems-route.js');
+const authRouter = require('./routes/authRouter.js');
 
 app.use(express.json());
 app.use(express.urlencoded());
@@ -19,14 +20,8 @@ app.get('/', (req, res) => {
   return res.status(200).sendFile(path.join(__dirname, '../client/index.html'));
 });
 
-
-app.use('/github', authRouter, (req, res, next) => {
-  return res.redirect(`https://github.com/login/oauth/authorize?client_id=c39c3106c66253bf31bc&redirect_uri=http://localhost:8080/&allow_signup=true&scope=user`)
-})
-
-
+app.use('/github', authRouter);
 app.use('/problems', problemsRouter);
-
 
 // No build command
 // app.use(express.static(path.join(__dirname, '../build')));
