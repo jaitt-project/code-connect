@@ -1,25 +1,28 @@
+const {performance} = require('perf_hooks');
+
 class Fizzbuzz {
   constructor(id) {
     this.id = id;
-    this.title = 'Fizzbuzz'
+    this.title = 'Fizzbuzz';
     this.difficulty = 'easy';
-    this.prompt = 'Write a function that takes in a number n and returns an array containing the numbers 1 to n. Put "fizz" in place of numbers divisble by 3 but not by 5, "buzz" in place of numbers divisble by 5 but not by 3, and "fizzbuzz" in place of numbers divisble by both 3 and 5.'
-    this.example = `fizzbuzz(16) -> [1, 2, 'fizz', 4, 'buzz', 'fizz', 7, 8, 'fizz', 'buzz', 11, 'fizz', 13, 14, 'fizzbuzz', 16]`
-    this.solution = `function(n) {\n  const result = [];\n\n  for (let i = 1; i <= n; i++) {\n    if (i % 3 === 0 && i % 5 === 0) result.push('fizzbuzz');\n    else if (i % 3 === 0) result.push('fizz');\n    else if (i % 5 === 0) result.push('buzz');\n    else result.push(i);\n  }\n\n  return result;\n};`
+    this.prompt = 'Write a function that takes in a number n and returns an array containing the numbers 1 to n. Put "fizz" in place of numbers divisble by 3 but not by 5, "buzz" in place of numbers divisble by 5 but not by 3, and "fizzbuzz" in place of numbers divisble by both 3 and 5.';
+    this.example = `fizzbuzz(16) -> [1, 2, 'fizz', 4, 'buzz', 'fizz', 7, 8, 'fizz', 'buzz', 11, 'fizz', 13, 14, 'fizzbuzz', 16]`;
+    this.solution = `function(n) {\n  const result = [];\n\n  for (let i = 1; i <= n; i++) {\n    if (i % 3 === 0 && i % 5 === 0) result.push('fizzbuzz');\n    else if (i % 3 === 0) result.push('fizz');\n    else if (i % 5 === 0) result.push('buzz');\n    else result.push(i);\n  }\n\n  return result;\n};`;
   }
 
   evaluate(func) {
     // run func with test case and get time to run function
-    const before = Date.now();
     let result;
+    let runtime;
+    let before;
 
     try {
+      before = performance.now();
       result = func(31);
+      runtime = performance.now() - before;
     } catch (error) {
-      return {pass: false, error: error};
+      result = null;
     }
-    
-    const runtime = Date.now() - before;
 
     // run test suite
     const tests = {
