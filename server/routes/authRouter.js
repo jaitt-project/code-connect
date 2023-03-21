@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.use(
   '/github',
-//   authController.authenticate,
+  authController.authenticate,
   authController.postAuth,
   authController.afterToken,
   (req, res) => {
