@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
-import SignUpForm from './SignUpForm.jsx';
-import LogInForm from './LogInForm.jsx';
+import SignUpForm from './signUp.jsx';
+import LogInForm from './login.jsx';
 
 const Auth = (props) => {
   const [formType, setFormType] = useState('signIn');
