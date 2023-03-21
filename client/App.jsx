@@ -59,69 +59,66 @@ const App = (props) => {
 
   return (
     <div className='router'>
-      <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} user={user} />
-      <div className='routerMain' id='content'>
-        <Routes>
-          <Route
-            exact
-            path='/'
-            element={
-              loggedIn ? (
-                <DashboardContainer
-                  loggedIn={loggedIn}
-                  user={user}
-                  setUser={setUser}
-                />
-              ) : (
-                <Auth
-                  loggedIn={loggedIn}
-                  setLoggedIn={setLoggedIn}
-                  user={user}
-                  setUser={setUser}
-                />
-              )
-            }
-          />
-          <Route
-            exact
-            path='/settings'
-            element={
-              loggedIn ? (
-                <SettingsContainer
-                  loggedIn={loggedIn}
-                  user={user}
-                  setUser={setUser}
-                />
-              ) : (
-                <Auth
-                  loggedIn={loggedIn}
-                  setLoggedIn={setLoggedIn}
-                  user={user}
-                  setUser={setUser}
-                />
-              )
-            }
-          />
-          <Route
-            exact
-            path='/auth'
-            element={
-              loggedIn ? (
-                <DashboardContainer loggedIn={loggedIn} user={user} />
-              ) : (
-                <Auth
-                  loggedIn={loggedIn}
-                  setLoggedIn={setLoggedIn}
-                  user={user}
-                  setUser={setUser}
-                />
-              )
-            }
-          />
+      <Routes>
+        <Route
+          exact
+          path='/'
+          element={
+            loggedIn ? (
+              <DashboardContainer //Want to render our coding page here
+                loggedIn={loggedIn}
+                user={user}
+                setUser={setUser}
+              />
+            ) : (
+              <Auth // if not logged in render the auth component
+                loggedIn={loggedIn}
+                setLoggedIn={setLoggedIn}
+                user={user}
+                setUser={setUser}
+              />
+            )
+          }
+        />
+        <Route
+          exact
+          path='/settings'
+          element={
+            loggedIn ? (
+              <SettingsContainer
+                loggedIn={loggedIn}
+                user={user}
+                setUser={setUser}
+              />
+            ) : (
+              <Auth
+                loggedIn={loggedIn}
+                setLoggedIn={setLoggedIn}
+                user={user}
+                setUser={setUser}
+              />
+            )
+          }
+        />
+        <Route
+          exact
+          path='/auth'
+          element={
+            loggedIn ? (
+              <DashboardContainer loggedIn={loggedIn} user={user} />
+            ) : (
+              <Auth
+                loggedIn={loggedIn}
+                setLoggedIn={setLoggedIn}
+                user={user}
+                setUser={setUser}
+              />
+            )
+          }
+        />
 
-          <Route exact path='/' element={<LandingPageContainer />} />
-        </Routes>
-      </div>
+        <Route exact path='/' element={<LandingPageContainer />} />
+      </Routes>
     </div>
   );
 };
