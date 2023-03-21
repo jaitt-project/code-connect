@@ -9,13 +9,16 @@ class Fizzbuzz {
   }
 
   evaluate(func) {
-    // get time to run function
+    // run func with test case and get time to run function
     const before = Date.now();
+    let result;
+
     try {
-      const result = func(31);
+      result = func(31);
     } catch (error) {
       return {pass: false, error: error};
     }
+    
     const runtime = Date.now() - before;
 
     // run test suite
@@ -25,8 +28,8 @@ class Fizzbuzz {
       'Should work for multiples of 3': result[2] === 'fizz' && result[5] === 'fizz' && result[5] === 'fizz',
       'Should work for multiples of 5': result[4] === 'buzz' && result[9] === 'buzz',
       'Should work for multiples of 3 and 5': result[14] === 'fizzbuzz' && result[29] === 'fizzbuzz',
-    }
-
+    };
+    
     // check whether all tests passed
     let pass = true;
 

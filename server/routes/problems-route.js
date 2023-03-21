@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const problemsController = require('./controllers/problemsController');
+const problemsController = require('../controllers/problemsController.js');
 
 // send back any random problem
 router.get('/', 
   problemsController.getRandomProblem,
   (req, res) => {
+    const {problemDetails} = res.locals;
     res.status(200).json(problemDetails);
   }
 );
@@ -14,6 +15,7 @@ router.get('/',
 router.get('/difficulty/:difficulty',
   problemsController.getProblemByDifficulty,
   (req, res) => {
+    const {problemDetails} = res.locals;
     res.status(200).json(problemDetails);
   }
 )
@@ -23,12 +25,13 @@ router.get('/problem/:problem',
   problemsController.verifyProblem,
   problemsController.getProblem,
   (req, res) => {
+    const {problemDetails} = res.locals;
     res.status(200).json(problemDetails);
   }
 )
 
 // evaluate a submitted solution
-router.post(':problem', 
+router.post('/:problem',
   problemsController.verifyProblem,
   problemsController.convertToFunction,
   problemsController.evaluateSolution,
