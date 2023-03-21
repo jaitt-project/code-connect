@@ -9,10 +9,11 @@ const PORT = 3000;
 app.use(express.json());
 
 app.get('/', authController.authenticate, (req, res) => {
-  res.status(200).sendFile(path.join(__dirname, '../index.html'));
+  res.status(200).sendFile(path.join(__dirname, '../client/index.html'));
 });
 
-app.use(express.static(path.join(__dirname, '../build')));
+// No build command
+// app.use(express.static(path.join(__dirname, '../build')));
 
 app.use('/', (req, res, next) => {
   return next({
