@@ -1,4 +1,5 @@
 const request = require('request');
+require('dotenv').config();
 const authController = {};
 
 authController.authenticate = (req, res, next) => {
@@ -10,12 +11,16 @@ authController.authenticate = (req, res, next) => {
 };
 
 authController.postAuth = (req, res, next) => {
-  console.log('authing part 2, token received');
+  console.log(
+    'authing part 2, token received',
+    process.env.CLIENT_ID,
+    process.env.CLIENT_SECRET
+  );
   const code = req.query.code;
-  const client_id = 'c39c3106c66253bf31bc';
-  const client_secret = '2b349e4a5c580d9e61ab284dda700a716f36b2cf';
+  const client_id = process.env.CLIENT_ID;
+  const client_secret = process.env.CLIENT_SECRET;
   const redirect_uri = 'http://localhost:8080/';
-  const state = 'ADHgfBdauibf137';
+  // const state = 'ADHgfBdauibf137';
   // const allow_signup = true;
   // const scope = 'user';
 
@@ -30,16 +35,16 @@ authController.postAuth = (req, res, next) => {
       client_secret: client_secret,
       code: code,
       redirect_uri: redirect_uri,
-      state: state,
     },
   };
   request(options, (err, response, body) => {
     res.locals.accessToken = JSON.parse(body).access_token;
-    return next();
+    next();
   });
 };
 
 authController.afterToken = (req, res, next) => {
+  console.log('in afterToken');
   const options = {
     url: 'https://api.github.com/user',
     headers: {
@@ -47,13 +52,13 @@ authController.afterToken = (req, res, next) => {
       Authorization: `token ${res.locals.accessToken}`,
     },
   };
-
   request(options, (error, response, body) => {
     const user = JSON.parse(body);
 
     res.locals.username = user.login;
+    res.locals.authenticated = true;
 
-    return next();
+    next();
   });
 };
 

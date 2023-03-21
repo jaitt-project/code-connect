@@ -16,8 +16,8 @@ app.get('/', (req, res) => {
   return res.status(200).sendFile(path.join(__dirname, '../client/index.html'));
 });
 
-app.get('/github', authController.authenticate ,authController.postAuth, authController.afterToken, authRouter, (req, res) => {
-  return res.sendStatus(200);
+app.use('/github', authRouter, (req, res, next) => {
+  return res.redirect(`https://github.com/login/oauth/authorize?client_id=c39c3106c66253bf31bc&redirect_uri=http://localhost:8080/&allow_signup=true&scope=user`)
 })
 
 
@@ -47,3 +47,5 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
+
+module.exports = app;
