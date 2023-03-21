@@ -28,11 +28,11 @@ const App = (props) => {
       try {
         const response = await fetch('//', {
           //insert the path that we're fetching info from here
-          credentials: 'include',
+          credentials: 'include', //includes the cookie
         });
         if (response.ok) {
           const data = await response.json();
-          console.log('jwt fetch ok', data[0]); // need to see how the data will ne returned
+          console.log('jwt fetch ok', data[0]); // need to see how the data will be returned
           const { user_name, email, _id } = data[0];
           setUser({
             user_name: user_name,
