@@ -10,23 +10,24 @@ class Problems {
     this.reverseLinkedList = new ReverseLinkedList(++this.length);
   }
 
-  randomizeAll() {
+  get(problem) {
+    return this[problem];
+  }
+
+  getRandom() {
     const arrayOfProblems = Object.keys(this).filter(key => key !== 'length'); // don't include length prop
-    const randomIndex = Math.floor(Math.random() * this.length - 1);
+    const randomIndex = Math.floor(Math.random() * this.length);
 
-    return arrayOfProblems[randomIndex];
+    const randomProblem = arrayOfProblems[randomIndex];
+    return this[randomProblem];
   }
 
-  randomizeEasy() {
-    // todo
-  }
+  getByDifficulty(difficulty) {
+    const arrayOfProblems = Object.keys(this).filter(key => key !== 'length' && this[key].difficulty === difficulty); // don't include length prop & filter for difficulty
+    const randomIndex = Math.floor(Math.random() * arrayOfProblems.length);
 
-  randomizeMedium() {
-    // todo
-  }
-
-  randomizeHard() {
-    // todo
+    const randomProblem = arrayOfProblems[randomIndex];
+    return this[randomProblem];
   }
 }
 

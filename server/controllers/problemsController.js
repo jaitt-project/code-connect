@@ -3,6 +3,22 @@ const problems = new Problems;
 
 const problemsController = {};
 
+problemsController.getProblem = (req, res, next) => {
+  const {problem} = res.locals;
+
+  res.locals.problemDetails = problems.get(problem);
+}
+
+problemsController.getRandomProblem = (req, res, next) => {
+  res.locals.problemDetails = problems.getRandom();
+}
+
+problemsController.getProblemByDifficulty = (req, res, next) => {
+  const {difficulty} = res.params;
+
+  res.locals.problemDetails = problems.getByDifficulty(difficulty);
+}
+
 problemsController.verifyProblem = (req, res, next) => {
   const {problemParam} = req.params;
 
@@ -23,6 +39,8 @@ problemsController.verifyProblem = (req, res, next) => {
       message: {err: 'Requested problem does not exist.'},
     })
   }
+
+  res.locals.problem = problem;
 };
 
 problemsController.convertToFunction = (req, res, next) => {
@@ -52,7 +70,7 @@ problemsController.convertToFunction = (req, res, next) => {
 problemsController.evaluateSolution = (req, res, next) => {
   if (res.locals.evaluation) return next(); // skip if evaluation already exists
 
-  const {problem} = req.params;
+  const {problem} = req.locals;
   const {solutionFunc} = res.locals;
 
   res.locals.evaluation = problems[problem].evaluate(solutionFunc);
