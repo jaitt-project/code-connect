@@ -10,6 +10,7 @@ router.use(
   authController.authenticate,
   authController.postAuth,
   authController.afterToken,
+  authController.jsonToken,
   (req, res) => {
     console.log('User authenticated by github');
     // res.cookie()

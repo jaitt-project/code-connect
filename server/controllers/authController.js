@@ -1,6 +1,7 @@
 const request = require('request');
 require('dotenv').config();
 const authController = {};
+const jwt = require('jsonwebtoken');
 
 authController.authenticate = (req, res, next) => {
   console.log('authing');
@@ -61,5 +62,11 @@ authController.afterToken = (req, res, next) => {
     next();
   });
 };
+
+authController.jsonToken = (req, res, next) => {
+  const token = jwt.sign({user: res.locals.username}, process.env.CLIENT_SECRET, {expiresIn: '1 day'});
+  console.log('token is', token);
+  return next();
+}
 
 module.exports = authController;
