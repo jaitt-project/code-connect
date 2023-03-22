@@ -2,7 +2,9 @@ const request = require('request');
 require('dotenv').config();
 const authController = {};
 const jwt = require('jsonwebtoken');
+const db = require('../database.json');
 
+// Redirect users to github for authentication
 authController.authenticate = (req, res, next) => {
   console.log('authenticate start');
   res.redirect(
@@ -10,6 +12,7 @@ authController.authenticate = (req, res, next) => {
   );
 };
 
+// after user has been authorized, send a post request to retrieve user info/ access token
 authController.postAuth = (req, res, next) => {
   console.log('post auth start');
   const url = `https://github.com/login/oauth/authorize?client_id=c39c3106c66253bf31bc&redirect_uri=http://localhost:8080/&allow_signup=true&scope=user`;
@@ -42,8 +45,9 @@ authController.postAuth = (req, res, next) => {
   });
 };
 
+// After access token is taken, create a username for the user, authenticate them
 authController.afterToken = (req, res, next) => {
-  console.log('afterTOken start');
+  console.log('afterToken start');
   const options = {
     url: 'https://api.github.com/user',
     method: 'GET',
@@ -58,7 +62,7 @@ authController.afterToken = (req, res, next) => {
     res.locals.username = user.login;
     res.locals.authenticated = true;
 
-    console.log('afterTOken end');
+    console.log('afterToken end');
     return next();
   });
 };
