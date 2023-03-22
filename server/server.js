@@ -2,7 +2,7 @@ const path = require('path');
 const express = require('express');
 const app = express();
 const cookieParser = require('cookie-parser');
-// const db = require('')
+const db = require('./database.json');
 
 const PORT = 3000;
 app.use(cookieParser());
