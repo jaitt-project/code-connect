@@ -19,6 +19,7 @@ router.get(
   '/callback',
   authController.postAuth,
   authController.afterToken,
+  // authController.verifyUser,
   authController.jsonToken,
   (req, res) => {
     console.log('second middleware chain is finished');
