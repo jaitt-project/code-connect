@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router';
 
 const LogInForm = (props) => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     user_name: '',
     password_: '',
@@ -30,14 +33,12 @@ const LogInForm = (props) => {
 
       if (response.ok) {
         const data = await response.json();
-        const { user_name, full_name, email, _id, arn, region } = data;
+        const { user_name, full_name, email, _id } = data;
         setUser({
           full_name: full_name,
           user_name: user_name,
           email: email,
           _id: _id,
-          arn: arn,
-          region: region,
         });
         setLoggedIn(true);
       } else {
@@ -88,13 +89,14 @@ const LogInForm = (props) => {
           <button type='submit' className='primary-button'>
             Sign In
           </button>
-          <button onClick={props.toggleFormType} className='secondary-button'>
-            Sign Up
+          <button
+            onClick={() => navigate('/signup')}
+            className='secondary-button'
+          >
+            Sign Up Here
           </button>
         </div>
         <br />
-
-        <label className='centered-text'>I forgot my password / username</label>
       </form>
     </div>
   );

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import SignUpForm from './signUp.jsx';
-import LogInForm from './login.jsx';
+import { Router, Route, Routes, useNavigate } from 'react-router-dom';
+import SignUpForm from './signUp';
+import LogInForm from './login';
 
 const Auth = (props) => {
   const [formType, setFormType] = useState('signIn');
@@ -16,12 +16,13 @@ const Auth = (props) => {
 
   const handleSignUpSuccess = () => {
     setLoggedIn(true);
-    navigate('/codeConnect');
+    navigate('/');
   };
 
   return (
     <div id='auth-container'>
       <div id='theme-bg-auth'>
+        {/* <Router> */}
         <Routes>
           <Route
             path='/auth/sign-in'
@@ -49,6 +50,7 @@ const Auth = (props) => {
             }
           />
         </Routes>
+        {/* </Router> */}
       </div>
     </div>
   );
