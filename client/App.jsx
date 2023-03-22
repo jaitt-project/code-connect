@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Cookies from 'js-cookie'; // Library for reading cookies and what not
-import MainPage from './Main/MainPage.jsx';
+import Main from './Main/Main.jsx';
 import Auth from './components/auth.jsx';
 import './stylesheets/styles.scss';
 
@@ -34,7 +34,7 @@ const App = (props) => {
             path='/'
             element={
               loggedIn ? (
-                <MainPage loggedIn={loggedIn} user={user} setUser={setUser} />
+                <Main loggedIn={loggedIn} user={user} setUser={setUser} />
               ) : (
                 <Auth
                   loggedIn={loggedIn}
