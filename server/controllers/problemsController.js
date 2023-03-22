@@ -49,7 +49,7 @@ problemsController.verifyProblem = (req, res, next) => {
 
 problemsController.convertToFunction = (req, res, next) => {
   const {solution} = req.body;
-
+  
   // get portion of string that is the function body
   const functionBodyStart = solution.indexOf('{') + 1; // exclude bracket
   const functionBodyEnd = solution.lastIndexOf('}');
@@ -58,11 +58,18 @@ problemsController.convertToFunction = (req, res, next) => {
   // get portion of string that is the function parameters
   const functionParamsStart = solution.indexOf('(') + 1; // exclude parens
   const functionParamsEnd = solution.indexOf(')');
-  const functionParams = solution.slice(functionParamsStart, functionParamsEnd).replace(' ', '').split(','); // split params into an array
+  const functionParams = solution.slice(functionParamsStart, functionParamsEnd); // string of comma seperated params
+  const splitFunctionParams = functionParams.replaceAll(' ', '').split(','); // split params into an array
+
+  // get function name, necessary for recursive solutions
+  const functionNameStart = solution.indexOf(' ') + 1;
+  const functionNameEnd = functionParamsStart -1; // exclude parens
+  const functionName = solution.slice(functionNameStart, functionNameEnd).replaceAll(' ', '');
   
   // create function
   try {
-    res.locals.solutionFunc = new Function(...functionParams, functionBody);
+    // creates a new anonymous function that calls the named function when called, passing in provided args
+    res.locals.solutionFunc = new Function(...splitFunctionParams, `return (function ${functionName}(${functionParams}) { ${functionBody} })(${functionParams})`);
     return next();
   } catch (error) {
     // add a failure evaluation
