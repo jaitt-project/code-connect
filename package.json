@@ -16,6 +16,7 @@
   "homepage": "https://github.com/jaitt-project/code-connect#readme",
   "dependencies": {
     "@monaco-editor/react": "^4.4.6",
+    "cors": "^2.8.5",
     "nodemon": "^2.0.21",
     "react": "^17.0.2",
     "react-cookie": "^4.1.1",
