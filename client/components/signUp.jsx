@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 const signUpForm = (props) => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     full_name: '',
     user_name: '',
@@ -67,8 +70,8 @@ const signUpForm = (props) => {
 
       <form onSubmit={handleSubmit}>
         <label>
-          First / Last name
           <br />
+          First / Last name
           <input
             type='name'
             name='full_name'
@@ -78,8 +81,8 @@ const signUpForm = (props) => {
           />
         </label>
         <label>
-          Username
           <br />
+          Username
           <input
             type='username'
             name='user_name'
@@ -89,8 +92,8 @@ const signUpForm = (props) => {
           />
         </label>
         <label>
-          Email
           <br />
+          Email
           <input
             type='email'
             name='email'
@@ -100,8 +103,8 @@ const signUpForm = (props) => {
           />
         </label>
         <label>
-          Password
           <br />
+          Password
           <input
             type='password'
             name='password_'
@@ -111,8 +114,8 @@ const signUpForm = (props) => {
           />
         </label>
         <label>
-          Confirm Password
           <br />
+          Confirm Password
           <input
             type='password'
             name='confirmPassword'
@@ -127,8 +130,8 @@ const signUpForm = (props) => {
           <button type='submit' className='primary-button'>
             Sign Up
           </button>
-          <button onClick={toggleFormType} className='secondary-button'>
-            Sign In
+          <button onClick={() => navigate('/')} className='secondary-button'>
+            Click here to Sign In
           </button>
         </div>
       </form>
