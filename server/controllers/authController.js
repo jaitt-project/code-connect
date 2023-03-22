@@ -74,10 +74,12 @@ authController.jsonToken = (req, res, next) => {
     process.env.CLIENT_SECRET,
     { expiresIn: '1 day' }
   );
+  // If the jwt already exists
+   console.log(res.locals)
+
   res.locals.jwt = token;
   console.log('token created');
-  res.cookie('JWT', token, { httpOnly: true, secure: true });
-  console.log('jwt end');
+  res.cookie('JWT', token, { httpOnly: false, secure: false });
   return next();
 };
 
