@@ -23,7 +23,7 @@ class BinToDec {
    
     // Should ignore leading zeroes
     try {
-      tests['Should ignore leading zeroes'] = func('0000000010101') = 21
+      tests['Should ignore leading zeroes'] = func('0000000010101') === 21
     } catch (error) {
       tests['Should ignore leading zeroes'] = false;
     }
