@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Cookies from 'js-cookie'; // Library for reading cookies and what not
-import MainPage from './Main/MainPage.jsx';
+import Main from './Main/Main.jsx';
 import Auth from './components/auth.jsx';
 // import './stylesheets/styles.scss';
 import LogInForm from './components/login.jsx';
@@ -19,13 +19,6 @@ const App = (props) => {
       setLoggedIn(false);
     }
     console.log(Cookies.get());
-    // For use with HTTP only cookies
-    // fetch('/github', {
-    //   mode: 'no-cors',
-    //   credentials: 'include',
-    // })
-    //   .then((res) => res.json())
-    //   .then((data) => console.log(data));
   }, []);
 
   const handleSignUpSuccess = () => {
@@ -41,7 +34,7 @@ const App = (props) => {
             path='/'
             element={
               loggedIn ? (
-                <MainPage loggedIn={loggedIn} user={user} setUser={setUser} />
+                <Main loggedIn={loggedIn} user={user} setUser={setUser} />
               ) : (
                 // <Auth
                 //   loggedIn={loggedIn}
@@ -53,15 +46,16 @@ const App = (props) => {
                   // toggleFormType={toggleFormType}
                   loggedIn={loggedIn}
                   setLoggedIn={setLoggedIn}
-                  user={user}
-                  setUser={setUser}
-                  onSignUpSuccess={handleSignUpSuccess}
+                  // user={user}
+                  // setUser={setUser}
+                  // onSignUpSuccess={handleSignUpSuccess}
                 />
                 // <p>Hello World</p>
               )
             }
           />
-          <Route path='/signup' element={<SignUpForm />} />
+
+          <Route path='*' element={<ErrorPage />} />
         </Routes>
       </Router>
     </div>
