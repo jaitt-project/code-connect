@@ -2,7 +2,7 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Cookies from 'js-cookie'; // Library for reading cookies and what not
 import Main from './Main/Main.jsx';
-import Auth from './components/auth.jsx';
+import Error from './components/errorPage.jsx';
 // import './stylesheets/styles.scss';
 import LogInForm from './components/login.jsx';
 import SignUpForm from './components/signUp.jsx';
@@ -55,7 +55,7 @@ const App = (props) => {
             }
           />
 
-          <Route path='*' element={<ErrorPage />} />
+          <Route path='*' element={<Error />} />
         </Routes>
       </Router>
     </div>
