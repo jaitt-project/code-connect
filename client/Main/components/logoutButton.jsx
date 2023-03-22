@@ -21,7 +21,7 @@ const LogoutButton = () => {
 
 export default LogoutButton;
 */
-
+/*
 import React from 'react';
 import { useCookies } from 'react-cookie';
 import { useHistory } from 'react-router-dom';
@@ -40,10 +40,37 @@ const LogoutButton = () => {
 
   return (
     <>
-      <button className='logoutButton' onClick={handleLogout}>
+    <LogoutButton
+      {<button className='logoutButton' onClick={handleLogout}>
         Logout
-      </button>
+      </button>}
+      />
     </>
+  );
+};
+
+export default LogoutButton;
+*/
+import React from 'react';
+import { useCookies } from 'react-cookie';
+// import { useHistory } from 'react-router-dom';
+
+const LogoutButton = () => {
+  const [cookies, setCookie, removeCookie] = useCookies(['jwt']);
+  // const history = useHistory();
+
+  const handleLogout = () => {
+    // Delete the 'jwt' cookie
+    removeCookie('jwt');
+
+    // Redirect the user to the login page
+    // history.push('/login');
+  };
+
+  return (
+    <button className='logoutButton' onClick={handleLogout}>
+      Logout
+    </button>
   );
 };
 
