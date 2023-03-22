@@ -72,7 +72,7 @@ authController.jsonToken = (req, res, next) => {
   );
   res.locals.jwt = token;
   console.log('token created');
-  res.cookie('JWT', token, { httpOnly: true, secure: true });
+  res.cookie('JWT', token, { httpOnly: true });
   console.log('jwt end');
   return next();
 };
