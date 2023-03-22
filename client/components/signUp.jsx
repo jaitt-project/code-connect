@@ -1,142 +1,167 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { Link } from 'react-router-dom';
 
-const signUpForm = (props) => {
-  const navigate = useNavigate();
+import Form from 'react-bootstrap/Form';
+import Button from 'react-bootstrap/Button';
 
-  const [formData, setFormData] = useState({
-    full_name: '',
-    user_name: '',
-    email: '',
-    password_: '',
-    confirmPassword: '',
-  });
-  const { toggleFormType, setUser, onSignUpSuccess } = props;
+export default function Signup() {
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const signUpFormData = {
-      full_name: formData.full_name,
-      user_name: formData.user_name,
-      email: formData.email,
-      password_: formData.password_,
-    };
-    if (formData.password_ !== formData.confirmPassword)
-      return handleMismatchedPasswords();
-    if (formData.password_ === formData.confirmPassword)
-      console.log('signing up....');
-
-    try {
-      const response = await fetch('/', {
-        //Add the path of where we're posting our new user info
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify([signUpFormData]), //May need to change data type depending on what the backend is expecting
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        const { user_name, full_name, email, _id } = data;
-        setUser({
-          full_name: full_name,
-          user_name: user_name,
-          email: email,
-          _id: _id,
-        });
-        onSignUpSuccess();
-      } else {
-        console.log('Sign up failed');
-      }
-    } catch (error) {
-      console.error(error);
-      console.log('Unable to sign-up at this time: ');
+  const handleInput = (e) => {
+    switch (e.target.name) {
+      case 'first-name':
+        setFirstName(e.target.value);
+        break;
+      case 'last-name':
+        setLastName(e.target.value);
+        break;
+      case 'username':
+        setUsername(e.target.value);
+        break;
+      case 'email':
+        setEmail(e.target.value);
+        break;
+      case 'password':
+        setPassword(e.target.value);
+        break;
+      default:
+        break;
     }
   };
 
-  const handleMismatchedPasswords = () => {
-    console.log('passwords do not match');
-    const passwordInput = document.getElementById('confirmPassword');
-    passwordInput.style.border = '2px solid red';
+  const handleSubmit = async () => {
+    const validateEmail = (email) =>
+      !!email.match(/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,6}$/);
+
+    const validateUsername = (username) =>
+      !!username.match(/^[a-zA-Z0-9._-]{3,25}$/);
+
+    const validatePassword = (password) =>
+      !!password.match(/^[a-zA-Z0-9._-]{8,}$/);
+
+    const emailvalidity = validateEmail(email);
+    const usernamevalidity = validateUsername(username);
+    const passwordvalidity = validatePassword(password);
+
+    if (emailvalidity && usernamevalidity && passwordvalidity) {
+      try {
+        const response = await fetch('/signup', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            first_name: firstName,
+            last_name: lastName,
+            username,
+            email,
+            password,
+            avatar,
+          }),
+        });
+
+        if (response.status === 200) {
+          window.location = '/';
+        } else {
+          const error = response.json();
+          throw new Error(error.message);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      window.alert('Please enter valid credentials');
+    }
   };
 
   return (
-    <div className='form-container'>
-      <h1>SIGN UP</h1>
+    <div className='signup-container'>
+      <div className='signup'>
+        <h2>
+          <strong>Sign-Up Today!</strong>
+        </h2>
+        <Form>
+          <h6>Used by Will, Phil, and millions more</h6>
+          <Form.Group className='mb-3'>
+            <Form.Label>First Name</Form.Label>
+            <Form.Control
+              type='text'
+              placeholder='Enter first name'
+              name='first-name'
+              value={firstName}
+              onChange={handleInput}
+            />
+          </Form.Group>
 
-      <form onSubmit={handleSubmit}>
-        <label>
-          <br />
-          First / Last name
-          <input
-            type='name'
-            name='full_name'
-            value={formData.full_name}
-            onChange={handleInputChange}
-            required
-          />
-        </label>
-        <label>
-          <br />
-          Username
-          <input
-            type='username'
-            name='user_name'
-            value={formData.user_name}
-            onChange={handleInputChange}
-            required
-          />
-        </label>
-        <label>
-          <br />
-          Email
-          <input
-            type='email'
-            name='email'
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-          />
-        </label>
-        <label>
-          <br />
-          Password
-          <input
-            type='password'
-            name='password_'
-            value={formData.password_}
-            onChange={handleInputChange}
-            required
-          />
-        </label>
-        <label>
-          <br />
-          Confirm Password
-          <input
-            type='password'
-            name='confirmPassword'
-            id='confirmPassword'
-            value={formData.confirmPassword}
-            onChange={handleInputChange}
-            required
-          />
-        </label>
-        <br />
-        <div className='button-flex-wrapper'>
-          <button type='submit' className='primary-button'>
-            Sign Up
-          </button>
-          <button onClick={() => navigate('/')} className='secondary-button'>
-            Click here to Sign In
-          </button>
-        </div>
-      </form>
+          <Form.Group className='mb-3'>
+            <Form.Label>Last Name</Form.Label>
+            <Form.Control
+              type='text'
+              placeholder='Enter last name'
+              name='last-name'
+              value={lastName}
+              onChange={handleInput}
+            />
+          </Form.Group>
+
+          <Form.Group className='mb-3'>
+            <Form.Label>Username</Form.Label>
+            <Form.Control
+              type='text'
+              placeholder='Username'
+              name='username'
+              value={username}
+              onChange={handleInput}
+            />
+            <Form.Text className='text-muted'>
+              Username must be between 3 and 25 characters
+            </Form.Text>
+          </Form.Group>
+
+          <Form.Group className='mb-3'>
+            <Form.Label>Email address</Form.Label>
+            <Form.Control
+              type='email'
+              placeholder='Enter email'
+              name='email'
+              value={email}
+              onChange={handleInput}
+            />
+            <Form.Text className='text-muted'>
+              We'll never share your email with anyone else.
+            </Form.Text>
+          </Form.Group>
+
+          <Form.Group className='mb-3'>
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type='password'
+              placeholder='Password'
+              id='passwordInput'
+              name='password'
+              value={password}
+              onChange={handleInput}
+            />
+          </Form.Group>
+          <Form.Group className='mb-3'>
+            <Form.Check
+              type='checkbox'
+              label='I agree to the terms and conditions!'
+            />
+          </Form.Group>
+          <Button variant='dark' onClick={handleSubmit}>
+            Submit
+          </Button>
+        </Form>
+
+        <p>
+          Already a user? <Link to='/login'>Login</Link>
+        </p>
+      </div>
     </div>
   );
-};
-
-export default signUpForm;
+}

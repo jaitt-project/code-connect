@@ -3,9 +3,9 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import Cookies from 'js-cookie'; // Library for reading cookies and what not
 import Main from './Main/Main.jsx';
 import Error from './components/errorPage.jsx';
-// import './stylesheets/styles.scss';
-import LogInForm from './components/login.jsx';
-import SignUpForm from './components/signUp.jsx';
+import Home from './components/Home.jsx';
+import Login from './components/login.jsx';
+import SignUp from './components/signUp.jsx';
 
 const App = (props) => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -27,11 +27,11 @@ const App = (props) => {
   };
 
   return (
-    <div className='router'>
+    <div className="router">
       <Router>
         <Routes>
           <Route
-            path='/'
+            path="/"
             element={
               loggedIn ? (
                 <Main loggedIn={loggedIn} user={user} setUser={setUser} />
@@ -42,7 +42,7 @@ const App = (props) => {
                 //   user={user}
                 //   setUser={setUser}
                 // />
-                <LogInForm
+                <Home
                   // toggleFormType={toggleFormType}
                   loggedIn={loggedIn}
                   setLoggedIn={setLoggedIn}
@@ -55,7 +55,9 @@ const App = (props) => {
             }
           />
 
-          <Route path='*' element={<Error />} />
+          {/* <Route path='*' element={<Error />} /> */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
       </Router>
     </div>
