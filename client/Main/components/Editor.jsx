@@ -1,13 +1,15 @@
 import React from 'react';
 import Editor from '@monaco-editor/react';
 
-function MonacoEditor() {
+function MonacoEditor(props) {
+  const { editorValue, setEditorState } = props;
   return (
     <Editor
-      height='90vh'
+      height='100vh'
       theme='vs-dark'
       defaultLanguage='javascript'
-      defaultValue='// some comment'
+      defaultValue={editorValue}
+      onChange={setEditorState}
     />
   );
 }
