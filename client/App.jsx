@@ -1,70 +1,52 @@
-import React, { useState, useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
-import Main from './Main/Main.jsx';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
+import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import Cookies from 'js-cookie'; // Library for reading cookies and what not
+import MainPage from './Main/MainPage.jsx';
 import Auth from './components/auth.jsx';
 import './stylesheets/styles.scss';
 
 const App = (props) => {
   const [loggedIn, setLoggedIn] = useState(false);
   const [user, setUser] = useState({});
-  const navigate = useNavigate();
 
-  // Log user in and fetch data if JWT is present
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        const response = await fetch('//', {
-          credentials: 'include', //includes the cookie
-        });
-        if (response.ok) {
-          const data = await response.json();
-          console.log('jwt fetch ok', data[0]);
-          const { user_name, email, _id } = data[0];
-          setUser({
-            user_name: user_name,
-            email: email,
-            _id: _id,
-          });
-          setLoggedIn(true);
-        } else {
-          console.error('Unable to authenticate jwt');
-          setLoggedIn(false);
-        }
-      } catch (error) {
-        console.error('JWT', error);
-        setLoggedIn(false);
-      }
-    };
-    checkAuth();
-  }, []);
-
-  useEffect(() => {
-    // If user is logged in, redirect to the main page
-    if (loggedIn) {
-      navigate('/main');
+  useLayoutEffect(() => {
+    // Check if users
+    console.log('ULE Called');
+    if (Cookies.get('JWT') !== undefined) setLoggedIn(true);
+    else {
+      setLoggedIn(false);
     }
-  }, [loggedIn, navigate]);
+    console.log(Cookies.get());
+    // For use with HTTP only cookies
+    // fetch('/github', {
+    //   mode: 'no-cors',
+    //   credentials: 'include',
+    // })
+    //   .then((res) => res.json())
+    //   .then((data) => console.log(data));
+  }, []);
 
   return (
     <div className='router'>
-      <Routes>
-        <Route
-          exact
-          path='/main'
-          element={
-            loggedIn ? (
-              <Main loggedIn={loggedIn} user={user} setUser={setUser} />
-            ) : (
-              <Auth
-                loggedIn={loggedIn}
-                setLoggedIn={setLoggedIn}
-                user={user}
-                setUser={setUser}
-              />
-            )
-          }
-        />
-      </Routes>
+      <Router>
+        <Routes>
+          <Route
+            path='/'
+            element={
+              loggedIn ? (
+                <MainPage loggedIn={loggedIn} user={user} setUser={setUser} />
+              ) : (
+                <Auth
+                  loggedIn={loggedIn}
+                  setLoggedIn={setLoggedIn}
+                  user={user}
+                  setUser={setUser}
+                />
+              )
+            }
+          />
+        </Routes>
+      </Router>
     </div>
   );
 };
